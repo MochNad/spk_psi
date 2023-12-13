@@ -144,7 +144,7 @@
                                     document.write(new Date().getFullYear());
                                 </script>
                                 , dibuat oleh
-                                <a href="https://themeselection.com" target="_blank"
+                                <a href="https://github.com/MochNad/spk_psi" target="_blank"
                                     class="footer-link fw-bolder">Kelompok 7 🚀</a>
                             </div>
                         </div>
