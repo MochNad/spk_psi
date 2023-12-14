@@ -1467,7 +1467,7 @@ function setTableRataRata(data, targetId) {
                 <tr>
                     <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>${criteriaName}</strong></td>
                     <td>=</td>
-                    <td>( ${i} / ${countAlternative} ) * ${totalNormalizedValue}</td>
+                    <td>( 1 / ${countAlternative} ) * ${totalNormalizedValue}</td>
                     <td>=</td>
                     <td>${average}</td>
                 </tr>`;
@@ -1610,21 +1610,19 @@ function setTableDeviasi(data, targetId) {
             }
         });
 
-        // Hitung total deviation
-        const totalDeviation = data.reduce((total, entry) => {
-            return total + (entry.deviation !== undefined ? entry.deviation : 0);
-        }, 0);
-
-        if (!data || data.length === 0) {
+        if (!data || (data.length === 1 && data[0].total_deviation !== undefined && data[0].total_deviation === 0)) {
+            tableBody += `
+                <tr>
+                    <td colspan="5" class="text-center">Kosong</td>
+                </tr>`;
+        } else {
+            const totalDeviation = data.reduce((total, entry) => {
+                return total + (entry.deviation !== undefined ? entry.deviation : 0);
+            }, 0);
             tableBody += `
             <tr class="text-success">
                 <td colspan="4"><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>Total</strong></td>
                 <td>${totalDeviation.toFixed(4).replace(/\.?0+$/, '')}</td>
-            </tr>`;
-        } else {
-            tableBody += `
-            <tr>
-                <td colspan="5" class="text-center">Kosong</td>
             </tr>`;
         }
     }
@@ -1754,14 +1752,14 @@ function setTableRankPSI(matriksPSI, targetId) {
             <div class="table-responsive text-nowrap">
                 <table class="table table-sm">
                     ${(!matriksPSI || matriksPSI.length === 0) ? '' :
-                        `<thead>
+            `<thead>
                             <tr>
                                 <th>Ranking</th>
                                 <th>Alternatif</th>
                                 <th>Total PSI</th>
                             </tr>
                         </thead>`
-                    }
+        }
                     <tbody class="table-border-bottom-0">
                         ${tableBody}
                     </tbody>
@@ -1828,15 +1826,15 @@ function setTablePSI(matriksPSI, targetId) {
             <div class="table-responsive text-nowrap">
                 <table class="table table-sm">
                     ${(!matriksPSI || matriksPSI.length === 0) ? '' :
-                        `<thead>
+            `<thead>
                                 <tr>
                                     <th></th>
                                     ${uniqueCriteriaNames
-                            .filter(criteriaName => matriksPSI.some(entry => entry.criteria_name === criteriaName && entry.psiValue !== undefined))
-                            .map(criteriaName => `<th>${criteriaName}</th>`).join('')}
+                .filter(criteriaName => matriksPSI.some(entry => entry.criteria_name === criteriaName && entry.psiValue !== undefined))
+                .map(criteriaName => `<th>${criteriaName}</th>`).join('')}
                                 </tr>
                             </thead>`
-                    }
+        }
                     <tbody class="table-border-bottom-0">
                         ${tableBody}
                     </tbody>
