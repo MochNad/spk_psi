@@ -69,15 +69,10 @@ function validateInput(input) {
         input.value = '0' + input.value;
     }
 
-    // Jika nilai input adalah 0, tambahkan . di belakang
-    if (parseFloat(input.value) === 0 && input.value.indexOf('.') === -1) {
-        input.value += '.';
-    }
-
     // Batasi nilai antara 0 dan 100
     var numericValue = parseFloat(input.value);
     if (isNaN(numericValue) || numericValue < 0) {
-        input.value = '0.';
+        input.value = '0';
     } else if (numericValue > 100) {
         input.value = '100';
     }
@@ -1021,13 +1016,6 @@ function inputChange(cellId, value) {
 function saveInputData() {
     var tokenInput = document.getElementById('tokenInput');
     var csrfToken = tokenInput.value; // Assuming your hidden input field has the CSRF token
-
-    // Check if any value in inputValues is "0."
-    if (inputValues.some(item => item.value === "0.")) {
-        showErrorToast('Jangan input 0 saja');
-        return; // Stop execution if there is a "0." value
-    }
-
 
     var data = { inputs: inputValues, _token: csrfToken };
 
